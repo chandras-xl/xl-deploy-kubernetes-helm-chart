@@ -1,13 +1,12 @@
 {{$XLD_ADMIN_PASS := .Values.AdminPassword | default "admin" }}
-{{$XLD_DB_NAME := .Values.UseExternaldb.XL_DB_NAME | default "xld-db"}}
-{{$XLD_DB_USER := .Values.UseExternaldb.XL_DB_USERNAME | default "xld"}}
-{{$XLD_DB_PASS := .Values.UseExternaldb.XL_DB_PASSWORD | default "xld"}}
-{{$XL_DB_URL := .Values.UseExternaldb.XL_DB_URL}}
-{{- if not .Values.UseExternaldb.enabled }}
+{{$XLD_DB_NAME := .Values.UseExistingDB.XL_DB_NAME | default "xld-db"}}
+{{$XLD_DB_USER := .Values.UseExistingDB.XL_DB_USERNAME | default "xld"}}
+{{$XLD_DB_PASS := .Values.UseExistingDB.XL_DB_PASSWORD | default "xld"}}
+{{- if not .Values.UseExistingDB.Enabled }}
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: postgresql-init-sql-xld
+  name: {{ template "xl-deploy.fullname" . }}-postgresql
   labels:
     app: {{ template "xl-deploy.name" . }}
     chart: {{ template "xl-deploy.chart" . }}
@@ -63,7 +62,7 @@ spec:
           volumeMounts:
             - name: export-dir
               mountPath: /opt/xebialabs/xl-deploy-server/export
-        {{- if not .Values.UseExternaldb.enabled }}
+        {{- if not .Values.UseExistingDB.Enabled }}
         - name: wait-for-postgresql
           image: xebialabs/tiny-tools
           command:
@@ -75,7 +74,7 @@ spec:
               done;
           env:
             - name: POSTGRES_SVC
-              value: postgresql
+              value: {{ template "xl-deploy.fullname" . }}-postgresql
             - name: POSTGRES_PORT
               value: "5432"
         - name: create-db
@@ -90,7 +89,7 @@ spec:
             - name: POSTGRES_DB
               value: postgres
             - name: POSTGRES_HOST
-              value: postgresql
+              value: {{ template "xl-deploy.fullname" . }}-postgresql
         {{- end }}
           volumeMounts:
             - name: postgresql-init-sql-xld
@@ -129,10 +128,10 @@ spec:
             - name: XLD_DEVELOPMENT_MODE
               value: "{{ .Values.xldDevelopmentMode }}"
             - name: XL_DB_URL
-              {{- if not .Values.UseExternaldb.enabled }}
-              value: jdbc:postgresql://postgresql:5432/{{$XLD_DB_NAME}}
+              {{- if not .Values.UseExistingDB.Enabled }}
+              value: jdbc:postgresql://{{ template "xl-deploy.fullname" . }}-postgresql:5432/{{$XLD_DB_NAME}}
               {{- else }}
-              value: {{$XL_DB_URL}}
+              value: {{.Values.UseExistingDB.XL_DB_URL}}
               {{- end }}
             - name: XL_DB_USERNAME
               value: {{$XLD_DB_USER}}
@@ -143,10 +142,10 @@ spec:
           resources:
 {{ toYaml .Values.resources | indent 12 }}
       volumes:
-        {{- if not .Values.UseExternaldb.enabled }}
+        {{- if not .Values.UseExistingDB.Enabled }}
         - name: postgresql-init-sql-xld
           configMap:
-            name: postgresql-init-sql-xld
+            name: {{ template "xl-deploy.fullname" . }}-postgresql
             defaultMode: 0777
         {{- end }}
         - name: export-dir

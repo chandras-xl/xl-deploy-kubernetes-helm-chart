@@ -15,7 +15,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
   path: /
   hosts:
-    - devops-kn01.xebialabs.com
+    - example.com
   tls:
    - secretName: example-secretsName
      hosts:
@@ -39,9 +39,9 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
-UseExternaldb:
-  enabled: false
-  # If you want to use external database, change the the value to "true". Uncomment the following lines and provide the values.
+UseExistingDB:
+  Enabled: false
+  # If you want to use an existing database, change the the value to "true". Uncomment the following lines and provide the values.
   # XL_DB_URL:
   # XL_DB_USERNAME:
   # XL_DB_PASSWORD:

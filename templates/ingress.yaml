@@ -1,3 +1,4 @@
+{{- if ne .Values.K8sSetup.Platform "Openshift" }}
 {{- if and .Values.ingress.Enabled -}}
 {{- $fullName := include "xl-deploy.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
@@ -36,3 +37,4 @@ spec:
               servicePort: xld-http
   {{- end }}
 {{- end -}}
+{{- end }}

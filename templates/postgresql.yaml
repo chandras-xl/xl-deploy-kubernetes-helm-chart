@@ -44,6 +44,9 @@ spec:
         app: {{ template "xl-deploy.name" . }}-postgresql
         release: {{ .Release.Name }}
     spec:
+      {{- if eq .Values.K8sSetup.Platform "Openshift"}}
+      serviceAccountName: {{ template "xl-deploy.name" . }}-sa
+      {{- end }}
       initContainers:
         - name: fix-the-volume-permission
           image: xebialabs/tiny-tools

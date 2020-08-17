@@ -2,6 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+K8sSetup:
+  Platform: Openshift
+## Supported Platforms: "Openshift" , "PlainK8s"
+
 XldMasterCount: 2
 XldWorkerCount: 2
 
@@ -29,11 +33,18 @@ ingress:
      hosts:
        - example.com
 
+## This section is meant for Openshift
+route:
+  Enabled: true
+  annotations:
+  path: /
+  hosts:
+    -  example.com
+
 AdminPassword:
   # Provide the Credential
 xldLicense:
-  # Provide the License
-
+  # Provide the License in Base64 encoded format
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -56,8 +67,8 @@ UseExistingDB:
 MessageQueue:
   # Provide the details of your message queue deployments.
   DriverClassName:
-  URL:
-  UserName:
+  URL: 
+  UserName: 
   Password:
 
 HealthProbes: true

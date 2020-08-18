@@ -4,7 +4,7 @@
 
 K8sSetup:
   Platform: Openshift
-## Supported Platforms: "Openshift" , "PlainK8s"
+## Supported Platforms: "Openshift" , "PlainK8s", "AWSEKS"
 
 XldMasterCount: 2
 XldWorkerCount: 2
@@ -72,8 +72,8 @@ MessageQueue:
   Password:
 
 HealthProbes: true
-HealthProbesLivenessTimeout: 60
-HealthProbesReadinessTimeout: 60
+HealthProbesLivenessTimeout: 130
+HealthProbesReadinessTimeout: 130
 HealthProbeFailureThreshold: 12
 HealthPeriodScans: 10
 

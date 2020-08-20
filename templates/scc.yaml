@@ -13,14 +13,18 @@ allowHostIPC: false
 allowHostPorts: false
 allowPrivilegeEscalation: true
 allowPrivilegedContainer: true
+allowedCapabilities: []
 apiVersion: security.openshift.io/v1
+defaultAddCapabilities: []
 fsGroup:
   type: RunAsAny
 groups: []
 kind: SecurityContextConstraints
 metadata:
   name: {{ .Release.Name }}-privileged
+priority: 0
 readOnlyRootFilesystem: false
+requiredDropCapabilities: []
 runAsUser:
   type: RunAsAny
 seLinuxContext:

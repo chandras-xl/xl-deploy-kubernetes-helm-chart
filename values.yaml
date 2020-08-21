@@ -39,12 +39,20 @@ route:
   annotations:
   path: /
   hosts:
-    -  example.com
+    - example.com
 
 AdminPassword:
   # Provide the Credential
+
 xldLicense:
   # Provide the License in Base64 encoded format
+
+RepositoryKeystore: 
+  # Provide Keystore file in Base64 encoded format
+
+KeystorePassphrase: 
+  # Provide Passphrase for Keystore file
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little

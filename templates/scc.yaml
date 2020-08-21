@@ -1,5 +1,4 @@
 {{- if eq .Values.K8sSetup.Platform "Openshift"}}
-{{- if not .Values.UseExistingDB.Enabled }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -35,6 +34,5 @@ users:
 - system:serviceaccount:{{ .Release.Namespace }}:{{ template "xl-deploy.name" . }}-sa
 volumes:
 - '*'
-{{- end }}
 {{- end}}
 

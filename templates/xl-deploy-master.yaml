@@ -124,6 +124,10 @@ spec:
             - name: XLD_TASK_QUEUE_PASSWORD
               value: {{ .Password }}
             {{- end }}
+            - name: REPOSITORY_KEYSTORE
+              value: {{ .Values.RepositoryKeystore }}
+            - name: REPOSITORY_KEYSTORE_PASSPHRASE
+              value: {{ .Values.KeystorePassphrase }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
       volumes:

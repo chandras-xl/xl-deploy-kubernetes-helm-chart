@@ -253,6 +253,7 @@ pipeline{
                                         withCredentials([string(credentialsId: 'XLR_KEYSTORE', variable: 'XLR_KEYSTORE')]) {
                                            withCredentials([string(credentialsId: 'XLR_PASS_PHRASE', variable: 'XLR_PASS_PHRASE')]) {
                                                sh '''
+                                                    /usr/local/bin/kubectl config set-context --current --namespace=pipeline
                                                     /usr/local/bin/helm install --generate-name *.tgz --set ingress.hosts[0]=$HOST_NAME_XLR_EKS --set haproxy-ingress.controller.service.type=${LOADBALANCER} --set xlrLicense=${XLR_LICENSE} --set RepositoryKeystore=${XLR_KEYSTORE} --set KeystorePassphrase=${XLR_PASS_PHRASE} --set Persistence.StorageClass=$STORAGE_CLASS_EKS
                                                     sleep 5
                                                     /usr/local/bin/kubectl get svc
@@ -273,6 +274,7 @@ pipeline{
                                         withCredentials([string(credentialsId: 'XLD_KEYSTORE', variable: 'XLD_KEYSTORE')]) {
                                             withCredentials([string(credentialsId: 'XLD_PASS_PHRASE', variable: 'XLD_PASS_PHRASE')]) {
                                                 sh '''
+                                                    /usr/local/bin/kubectl config set-context --current --namespace=pipeline
                                                     /usr/local/bin/helm install --generate-name *.tgz --set ingress.hosts[0]=$HOST_NAME_XLD_EKS --set haproxy-ingress.controller.service.type=${LOADBALANCER} --set xlrLicense=${XLD_LICENSE} --set RepositoryKeystore=${XLD_KEYSTORE} --set KeystorePassphrase=${XLD_PASS_PHRASE} --set Persistence.StorageClass=$STORAGE_CLASS_EKS
                                                     sleep 5
                                                     /usr/local/bin/kubectl get svc

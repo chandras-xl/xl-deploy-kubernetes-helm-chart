@@ -9,7 +9,7 @@ pipeline{
         timeout(time: 10, unit: 'MINUTES')
     }
     environment {
-        BRANCH_NAME = "master"
+        BRANCH_NAME = "rabbitmq"
         BRANCH_OPENSHIFT = "ENG-2678"
         PRODUCT_NAME = "${params.PRODUCT}"
         PLATFORM_NAME = "${params.PLATFORM}"
@@ -110,9 +110,9 @@ pipeline{
                         try {
                             sh '''
                                 echo Updating the helm dependencies for $PRODUCT_NAME
-                                /usr/local/bin/helm dependency update xl-deploy-kubernetes-helm-chart-1
+                                /usr/local/bin/helm dependency update xl-deploy-kubernetes-helm-chart
                                 echo Packing the helm chart $PRODUCT_NAME
-                                /usr/local/bin/helm package xl-deploy-kubernetes-helm-chart-1
+                                /usr/local/bin/helm package xl-deploy-kubernetes-helm-chart
                                 echo Build package completed !!!                               
                             '''
                         }catch(error) {

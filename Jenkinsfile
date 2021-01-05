@@ -36,7 +36,7 @@ pipeline{
         HOST_NAME_XLR_OPENSHIFT = "release-openshift.apps.oc-devops.xldevinfra.com"
         HOST_NAME_XLD_OPENSHIFT = "deploy-openshift.apps.oc-devops.xldevinfra.com"
         STORAGE_CLASS_ONPREM = "nfs-client"
-        STORAGE_CLASS_EKS = "gp2"
+        STORAGE_CLASS_EKS = "aws-efs"
         LOADBALANCER = "LoadBalancer"
         OPENSHIFT_AWS_CRED = credentials('OPENSHIFT_AWS_CRED')
         OPENSHIFT_AWS_SERVER_URL = "https://api.oc-devops.xldevinfra.com:6443"

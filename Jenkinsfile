@@ -14,7 +14,7 @@ pipeline{
         PRODUCT_NAME = "${params.PRODUCT}"
         PLATFORM_NAME = "${params.PLATFORM}"
         GIT_HUB_XLR_URL = "https://github.com/chandras-xl/xl-release-kubernetes-helm-chart.git"
-        GIT_HUB_XLD_URL = "https://github.com/chandras-xl/xl-deploy-kubernetes-helm-chart-1.git"
+        GIT_HUB_XLD_URL = "https://github.com/chandras-xl/xl-deploy-kubernetes-helm-chart.git"
         GIT_HUB_XLR_OPENSHIFT_URL = "https://github.com/chandras-xl/xl-release-kubernetes-helm-chart.git"
         GIT_HUB_XLD_OPENSHIFT_URL = "https://github.com/chandras-xl/xl-deploy-kubernetes-helm-chart-1.git"       
         NEXUS_USER = "admin"

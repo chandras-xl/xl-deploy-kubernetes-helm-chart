@@ -14,7 +14,7 @@ pipeline{
         PRODUCT_NAME = "${params.PRODUCT}"
         PLATFORM_NAME = "${params.PLATFORM}"
         GIT_HUB_XLR_URL = "https://github.com/chandras-xl/xl-release-kubernetes-helm-chart.git"
-        GIT_HUB_XLD_URL = "https://github.com/chandras-xl/xl-deploy-kubernetes-helm-chart-1.git"
+        GIT_HUB_XLD_URL = "https://github.com/chandras-xl/xl-deploy-kubernetes-helm-chart.git"
         GIT_HUB_XLR_OPENSHIFT_URL = "https://github.com/chandras-xl/xl-release-kubernetes-helm-chart.git"
         GIT_HUB_XLD_OPENSHIFT_URL = "https://github.com/chandras-xl/xl-deploy-kubernetes-helm-chart-1.git"       
         NEXUS_USER = "admin"
@@ -110,9 +110,9 @@ pipeline{
                         try {
                             sh '''
                                 echo Updating the helm dependencies for $PRODUCT_NAME
-                                /usr/local/bin/helm dependency update xl-deploy-kubernetes-helm-chart-1
+                                /usr/local/bin/helm dependency update xl-deploy-kubernetes-helm-chart
                                 echo Packing the helm chart $PRODUCT_NAME
-                                /usr/local/bin/helm package xl-deploy-kubernetes-helm-chart-1
+                                /usr/local/bin/helm package xl-deploy-kubernetes-helm-chart
                                 echo Build package completed !!!                               
                             '''
                         }catch(error) {
@@ -245,7 +245,7 @@ pipeline{
             steps {
                 script {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_CRED', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                        withKubeConfig(caCertificate: '', clusterName: 'eks-devops', contextName: 'spaliwal@eks-devops.eu-west-1.eksctl.io', credentialsId: 'EKS_CONFIG', namespace: 'default', serverUrl: 'https://CC5E2351F79187EF9D05C18AA2FE52D7.gr7.eu-west-1.eks.amazonaws.com') {
+                        withKubeConfig(caCertificate: '', clusterName: 'eks-pipeline', contextName: 'spaliwal@eks-pipeline.eu-west-1.eksctl.io', credentialsId: 'EKS_CONFIG', namespace: 'pipeline', serverUrl: 'https://634BE0CB20CB3C6E85E62C9407787F66.sk1.eu-west-1.eks.amazonaws.com') {
                             if ( env.PRODUCT_NAME == 'XL Release' && env.PLATFORM_NAME == 'EKS' ) {
                                 try {
                                     echo "Installing $PRODUCT_NAME chart on $PLATFORM_NAME platform"
@@ -253,6 +253,7 @@ pipeline{
                                         withCredentials([string(credentialsId: 'XLR_KEYSTORE', variable: 'XLR_KEYSTORE')]) {
                                            withCredentials([string(credentialsId: 'XLR_PASS_PHRASE', variable: 'XLR_PASS_PHRASE')]) {
                                                sh '''
+                                                    /usr/local/bin/kubectl config set-context --current --namespace=pipeline
                                                     /usr/local/bin/helm install --generate-name *.tgz --set ingress.hosts[0]=$HOST_NAME_XLR_EKS --set haproxy-ingress.controller.service.type=${LOADBALANCER} --set xlrLicense=${XLR_LICENSE} --set RepositoryKeystore=${XLR_KEYSTORE} --set KeystorePassphrase=${XLR_PASS_PHRASE} --set Persistence.StorageClass=$STORAGE_CLASS_EKS
                                                     sleep 5
                                                     /usr/local/bin/kubectl get svc
@@ -273,6 +274,7 @@ pipeline{
                                         withCredentials([string(credentialsId: 'XLD_KEYSTORE', variable: 'XLD_KEYSTORE')]) {
                                             withCredentials([string(credentialsId: 'XLD_PASS_PHRASE', variable: 'XLD_PASS_PHRASE')]) {
                                                 sh '''
+                                                    /usr/local/bin/kubectl config set-context --current --namespace=pipeline
                                                     /usr/local/bin/helm install --generate-name *.tgz --set ingress.hosts[0]=$HOST_NAME_XLD_EKS --set haproxy-ingress.controller.service.type=${LOADBALANCER} --set xlrLicense=${XLD_LICENSE} --set RepositoryKeystore=${XLD_KEYSTORE} --set KeystorePassphrase=${XLD_PASS_PHRASE} --set Persistence.StorageClass=$STORAGE_CLASS_EKS
                                                     sleep 5
                                                     /usr/local/bin/kubectl get svc

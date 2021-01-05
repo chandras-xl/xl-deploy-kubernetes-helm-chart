@@ -275,7 +275,7 @@ pipeline{
                                             withCredentials([string(credentialsId: 'XLD_PASS_PHRASE', variable: 'XLD_PASS_PHRASE')]) {
                                                 sh '''
                                                     /usr/local/bin/kubectl config set-context --current --namespace=pipeline
-                                                    /usr/local/bin/helm install --generate-name *.tgz --set ingress.hosts[0]=$HOST_NAME_XLD_EKS --set haproxy-ingress.controller.service.type=${LOADBALANCER} --set xlrLicense=${XLD_LICENSE} --set RepositoryKeystore=${XLD_KEYSTORE} --set KeystorePassphrase=${XLD_PASS_PHRASE} --set Persistence.StorageClass=$STORAGE_CLASS_EKS
+                                                    /usr/local/bin/helm install --generate-name *.tgz --set ingress.hosts[0]=$HOST_NAME_XLD_EKS --set haproxy-ingress.controller.service.type=${LOADBALANCER} --set xldLicense=${XLD_LICENSE} --set RepositoryKeystore=${XLD_KEYSTORE} --set KeystorePassphrase=${XLD_PASS_PHRASE} --set Persistence.StorageClass=$STORAGE_CLASS_EKS
                                                     sleep 5
                                                     /usr/local/bin/kubectl get svc
                                                     echo "==================================================================="
